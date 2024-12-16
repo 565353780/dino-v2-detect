@@ -262,6 +262,7 @@ class DinoVisionTransformer(nn.Module):
 
         x_norm = self.norm(x)
         return {
+            "x_norm": x_norm,
             "x_norm_clstoken": x_norm[:, 0],
             "x_norm_regtokens": x_norm[:, 1 : self.num_register_tokens + 1],
             "x_norm_patchtokens": x_norm[:, self.num_register_tokens + 1 :],

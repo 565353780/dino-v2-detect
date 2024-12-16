@@ -62,9 +62,17 @@ class Detector(object):
 
         image_tensor = self.transform(image).unsqueeze(0).to(self.device, dtype=self.dtype)
 
-        dino_feature = self.model(image_tensor)
+        dino_features_dict = self.model.forward_features(image_tensor)
 
-        return dino_feature
+        assert isinstance(dino_features_dict, dict)
+
+        x_norm = dino_features_dict["x_norm"]
+        # x_norm_clstoken = dino_features_dict["x_norm_clstoken"]
+        # x_norm_regtokens = dino_features_dict["x_norm_regtokens"]
+        # x_norm_patchtokens = dino_features_dict["x_norm_patchtokens"]
+        # x = dino_features_dict["x_prenorm"]
+
+        return x_norm
 
     @torch.no_grad()
     def detectFile(self, image_file_path: str) -> Union[torch.Tensor, None]:
