@@ -62,6 +62,9 @@ class Detector(object):
 
         model_state_dict = torch.load(model_file_path, map_location='cpu')
         self.model.load_state_dict(model_state_dict, strict=True)
+
+        print('[INFO][Detector::loadModel]')
+        print('\t model loaded from:', model_file_path)
         return True
 
     @torch.no_grad()
