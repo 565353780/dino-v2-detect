@@ -5,7 +5,7 @@ from PIL import Image
 from typing import Union
 from torchvision import transforms
 
-from dino_v2_detect.Model.vision_transformer import vit_giant2, vit_large
+from dino_v2_detect.Model.vision_transformer import vit_giant2, vit_large, vit_base, vit_small
 
 
 class Detector(object):
@@ -27,6 +27,28 @@ class Detector(object):
             )
         elif model_type == 'large':
             self.model = vit_large(
+                patch_size=14,
+                num_register_tokens=4,
+                img_size=518,
+                ffn_layer='mlp',
+                block_chunks=0,
+                interpolate_antialias=True,
+                interpolate_offset=0.0,
+                init_values=1.0,
+            )
+        elif model_type == 'base':
+            self.model = vit_base(
+                patch_size=14,
+                num_register_tokens=4,
+                img_size=518,
+                ffn_layer='mlp',
+                block_chunks=0,
+                interpolate_antialias=True,
+                interpolate_offset=0.0,
+                init_values=1.0,
+            )
+        elif model_type == 'small':
+            self.model = vit_small(
                 patch_size=14,
                 num_register_tokens=4,
                 img_size=518,
