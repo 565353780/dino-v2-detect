@@ -13,7 +13,7 @@ def demo():
     detector = Detector(model_type, model_file_path, dtype, device)
 
     for _ in trange(100):
-        dino_feature = detector.detect(torch.randn([3, 3, 518, 518]))
+        dino_feature = detector.detect(torch.randn([3, 3, 518, 518], dtype=torch.float32, device='cpu'))
 
     for _ in trange(100):
         dino_feature = detector.detectFile(image_file_path)
