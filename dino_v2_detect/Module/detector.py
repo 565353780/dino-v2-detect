@@ -9,10 +9,16 @@ from dino_v2_detect.Model.vision_transformer import vit_giant2, vit_large, vit_b
 
 
 class Detector(object):
-    def __init__(self, model_type: str, model_file_path: Union[str, None]=None, device: str = 'cpu') -> None:
+    def __init__(self,
+                 model_type: str,
+                 model_file_path: Union[str, None]=None,
+                 dtype = 'auto',
+                 device: str = 'cpu') -> None:
         self.device = device
-        self.dtype = torch.bfloat16 if torch.cuda.is_bf16_supported() else torch.float16
-        # self.dtype = torch.float32
+        if dtype == 'auto':
+            self.dtype = torch.bfloat16 if torch.cuda.is_bf16_supported() else torch.float16
+        else:
+            self.dtype = dtype
 
         if model_type == 'giant2':
             # 1536
