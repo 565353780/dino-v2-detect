@@ -1,6 +1,5 @@
 import os
 import torch
-import numpy as np
 from PIL import Image
 from typing import Union
 from torchvision import transforms
@@ -100,15 +99,11 @@ class Detector(object):
         return True
 
     @torch.no_grad()
-    def detect(self, image: Union[Image.Image, np.ndarray, torch.Tensor]) -> torch.Tensor:
-        if isinstance(image, np.ndarray):
-            image = Image.fromarray(image)
-        elif isinstance(image, torch.Tensor):
-            image = Image.fromarray(image.cpu().numpy())
+    def detect(self, image_tensor: torch.Tensor) -> torch.Tensor:
+        image_dtype = image_tensor.dtype
+        image_device = image_tensor.device
 
-        image = image.convert('RGB')
-
-        image_tensor = self.transform(image).unsqueeze(0).to(self.device, dtype=self.dtype)
+        image_tensor = image_tensor.to(self.device, dtype=self.dtype)
 
         dino_features_dict = self.model.forward_features(image_tensor)
 
@@ -119,6 +114,8 @@ class Detector(object):
         # x_norm_regtokens = dino_features_dict["x_norm_regtokens"]
         # x_norm_patchtokens = dino_features_dict["x_norm_patchtokens"]
         # x = dino_features_dict["x_prenorm"]
+
+        x_norm = x_norm.to(image_device, dtype=image_dtype)
 
         return x_norm
 
@@ -132,6 +129,10 @@ class Detector(object):
 
         image = Image.open(image_file_path)
 
-        dino_feature = self.detect(image)
+        image = image.convert('RGB')
+
+        image_tensor = self.transform(image).unsqueeze(0)
+
+        dino_feature = self.detect(image_tensor)
 
         return dino_feature
