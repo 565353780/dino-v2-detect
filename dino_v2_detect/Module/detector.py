@@ -12,9 +12,10 @@ class Detector(object):
     def __init__(self, model_type: str, model_file_path: Union[str, None]=None, device: str = 'cpu') -> None:
         self.device = device
         # self.dtype = torch.bfloat16 if torch.cuda.is_bf16_supported() else torch.float16
-        self.dtype = torch.float16
+        self.dtype = torch.float32
 
         if model_type == 'giant2':
+            # 1536
             self.model = vit_giant2(
                 patch_size=14,
                 num_register_tokens=4,
@@ -26,6 +27,7 @@ class Detector(object):
                 init_values=1.0,
             )
         elif model_type == 'large':
+            # 1024
             self.model = vit_large(
                 patch_size=14,
                 num_register_tokens=4,
@@ -37,6 +39,7 @@ class Detector(object):
                 init_values=1.0,
             )
         elif model_type == 'base':
+            # 768
             self.model = vit_base(
                 patch_size=14,
                 num_register_tokens=4,
@@ -48,6 +51,7 @@ class Detector(object):
                 init_values=1.0,
             )
         elif model_type == 'small':
+            # 384
             self.model = vit_small(
                 patch_size=14,
                 num_register_tokens=4,
