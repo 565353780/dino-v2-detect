@@ -8,7 +8,7 @@ from dino_v2_detect.Module.detector import Detector
 def demo():
     model_type = "large"
     model_file_path = (
-        os.environ["HOME"] + "/chLi/Model/DINOv2/dinov2_vitb14_reg4_pretrain.pth"
+        os.environ["HOME"] + "/chLi/Model/DINOv2/dinov2_vitl14_reg4_pretrain.pth"
     )
     dtype = "auto"
     device = "cuda:0"
